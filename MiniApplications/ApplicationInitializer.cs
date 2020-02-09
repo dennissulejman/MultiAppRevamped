@@ -2,13 +2,13 @@
 
 namespace MultiAppRevamped.MiniApplications
 {
-    internal class MiniApplicationInitializer
+    internal class ApplicationInitializer
     {
-        public IMiniApplication Initialize(int option)
+        public IApplication Initialize(int option)
         {
             return option switch
             {
-                1 => new NumbersGame(),
+                1 => new DieRollGame(),
                 2 => new ListCreator(),
                 3 => new Calculator(),
                 _ => throw new InvalidOperationException("No such option available!")

@@ -5,4 +5,15 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="MultiAppRevamped.Tests\**" />
+    <EmbeddedResource Remove="MultiAppRevamped.Tests\**" />
+    <None Remove="MultiAppRevamped.Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="README.md" />
+  </ItemGroup>
+
 </Project>

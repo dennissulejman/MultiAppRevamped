@@ -6,6 +6,11 @@ namespace MultiAppRevamped.MiniApplications
 {
     internal class Calculator : IMiniApplication
     {
+        public void ReturnToMainMenu()
+        {
+            throw new NotImplementedException();
+        }
+
         public void StartApplication()
         {
             throw new NotImplementedException();
