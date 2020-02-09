@@ -7,13 +7,21 @@
 
   <ItemGroup>
     <Compile Remove="MultiAppRevamped.Tests\**" />
+    <Compile Remove="MultiAppRevampedTests\**" />
     <EmbeddedResource Remove="MultiAppRevamped.Tests\**" />
+    <EmbeddedResource Remove="MultiAppRevampedTests\**" />
     <None Remove="MultiAppRevamped.Tests\**" />
+    <None Remove="MultiAppRevampedTests\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.4.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
   </ItemGroup>
 
 </Project>
