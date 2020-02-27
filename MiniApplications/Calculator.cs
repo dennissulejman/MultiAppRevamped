@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
+using MultiAppRevamped.MiniApplications.Messages;
 using System;
 using System.Threading.Tasks;
 
@@ -7,15 +8,11 @@ namespace MultiAppRevamped.MiniApplications
     internal class Calculator : IMiniApplication
     {
         private Task<decimal> result;
+        private readonly CalculatorMessages messages;
 
-        public Calculator()
+        public Calculator(CalculatorMessages messages)
         {
-            StartApplication();
-        }
-
-        public void ReturnToMainMenu()
-        {
-            MainMenu.Display();
+            this.messages = messages;
         }
 
         public void StartApplication()
@@ -24,11 +21,11 @@ namespace MultiAppRevamped.MiniApplications
             Continue();
         }
 
-        public void WriteWelcomeMessage()
-        {
-            Console.Clear();
-            Console.WriteLine("Write any mathematic formula using +, -, /, or * between the numbers");
-        }
+        public void WriteWelcomeMessage() =>
+            messages.WelcomeMessage();
+
+        public void ReturnToMainMenu() =>
+            MainMenu.Show();
 
         private void Continue()
         {
@@ -37,13 +34,12 @@ namespace MultiAppRevamped.MiniApplications
             CalculationFinishedPrompt();
         }
 
-        private void AcceptUserInput()
-        {
+        private void AcceptUserInput() => 
             result = Calculate(Console.ReadLine());
-        }
 
         private async Task<decimal> Calculate(string formula)
         {
+            messages.Calculating();
             return await CSharpScript.EvaluateAsync<decimal>(formula);
         }
 
@@ -51,11 +47,11 @@ namespace MultiAppRevamped.MiniApplications
         {
             try
             {
-                Console.WriteLine($"The result of the calculation is {await result}");
+                messages.CalculationResult(await result);
             }
             catch (Exception)
             {
-                Console.WriteLine("Could not calculate the given expression, try again!");
+                messages.CouldNotCalculateExpression();
                 Console.ReadLine();
                 StartApplication();
             }
@@ -63,14 +59,22 @@ namespace MultiAppRevamped.MiniApplications
 
         private void CalculationFinishedPrompt()
         {
-            Console.WriteLine("Would you like to calculate a new problem? (y/n)");
+            messages.CalculationFinishedPromptMessage();
 
-            switch (Console.ReadKey().KeyChar)
+            Action continueAfterUserInput = Console.ReadKey().KeyChar switch
             {
-                case 'y': StartApplication(); break;
-                case 'n': ReturnToMainMenu(); break;
-                default: CalculationFinishedPrompt(); break;
-            }
+                var key when key.Equals('y') => 
+                    () => 
+                        StartApplication(),
+                var key when key.Equals('n') => 
+                    () =>
+                        ReturnToMainMenu(),
+                _ => 
+                    () => 
+                        CalculationFinishedPrompt()
+            };
+
+            continueAfterUserInput.Invoke();
         }
     }
 }

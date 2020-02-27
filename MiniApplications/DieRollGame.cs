@@ -1,21 +1,17 @@
-﻿using System;
+﻿using MultiAppRevamped.MiniApplications.Messages;
+using System;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("MultiAppRevamped.Tests")]
 namespace MultiAppRevamped.MiniApplications
 {
     internal class DieRollGame : IMiniApplication
-    {
-        private readonly Func<int> getRandomNumberFromOneToSix = () => new Random().Next(1, 7);
+    {               
+        private readonly DieRollGameMessages messages;
 
-        public DieRollGame()
+        public DieRollGame(DieRollGameMessages messages)
         {
-            StartApplication();
-        }
-
-        public void ReturnToMainMenu()
-        {
-            MainMenu.Display();
+            this.messages = messages;
         }
 
         public void StartApplication()
@@ -24,12 +20,11 @@ namespace MultiAppRevamped.MiniApplications
             PlayNumbersGame();
         }
 
-        public void WriteWelcomeMessage()
-        {
-            Console.Clear();
-            Console.WriteLine("To win, you will need either 5 or 6.");
-            Console.WriteLine("Press enter to roll the die!");
-        }
+        public void ReturnToMainMenu() =>
+            MainMenu.Show();
+
+        public void WriteWelcomeMessage() => 
+            messages.WelcomeMessage();
 
         private void PlayNumbersGame()
         {
@@ -42,44 +37,55 @@ namespace MultiAppRevamped.MiniApplications
         private int RollDie()
         {
             Console.ReadLine();
-            return getRandomNumberFromOneToSix.Invoke();
+            
+            //Simulate die roll of a regular 1-6 die
+            return new Random().Next(1, 7);
         }
 
         private void VerifyDieRoll(int dieRoll, int numberOfTries)
         {
             numberOfTries++;
 
-            switch (dieRoll >= 5)
+            Action<int, int> continueAfterVerification = dieRoll switch
             {
-                case true: GameWon(dieRoll, numberOfTries); break;
-                default: GameLost(dieRoll, numberOfTries); break;
-            }
+                var x when x >= 5 => GameWon,
+                _ => GameLost
+            };
+
+            continueAfterVerification.Invoke(dieRoll, numberOfTries);
         }
 
         private void GameWon(int dieRoll, int numberOfTries)
         {
-            Console.WriteLine($"{dieRoll}! You won after {numberOfTries} die rolls.");
+            messages.GameWonMessage(dieRoll, numberOfTries);
             Console.ReadLine();
-
             PlayAgainPrompt();
         }
 
         private void GameLost(int dieRoll, int numberOfTries)
         {
-            Console.WriteLine($"You rolled {dieRoll}, try again!");
+            messages.GameLostMessage(dieRoll);
             VerifyDieRoll(RollDie(), numberOfTries);
         }
 
         private void PlayAgainPrompt()
         {
-            Console.WriteLine("Would you like to play again? (y/n)");
+            messages.PlayAgainPromptMessage();
 
-            switch (Console.ReadKey().KeyChar)
+            Action continueAfterUserInput = Console.ReadKey().KeyChar switch
             {
-                case 'y': StartApplication(); break;
-                case 'n': ReturnToMainMenu(); break;
-                default: PlayAgainPrompt(); break;
-            }
+                var key when key.Equals('y') => 
+                    () => 
+                        StartApplication(),
+                var key when key.Equals('n') => 
+                    () => 
+                        ReturnToMainMenu(),
+                _ => 
+                    () => 
+                        PlayAgainPrompt()
+            };
+
+            continueAfterUserInput.Invoke();
         }
     }
 }

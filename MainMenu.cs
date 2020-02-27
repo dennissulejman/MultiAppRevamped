@@ -1,28 +1,41 @@
-﻿using MultiAppRevamped.MiniApplications;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MultiAppRevamped.Extensions.DependencyInjection;
+using MultiAppRevamped.MiniApplications;
 using System;
 
 namespace MultiAppRevamped
 {
     internal static class MainMenu
     {
-        private static readonly ApplicationInitializer applicationInitializer = new ApplicationInitializer();
+        private static readonly IServiceProvider serviceProvider =
+            AppServiceProvider.GetServiceProvider();
+        private static readonly ApplicationInitializer applicationInitializer;
+        private static readonly MainMenuMessages messages;
 
-        internal static void Display()
+        static MainMenu()
         {
-            Console.Clear();
-            Console.WriteLine("Welcome! Type one of the options then press enter to open their corresponding mini-application:");
-            Console.WriteLine("1: Try your luck, roll a die!");
-            Console.WriteLine("2: Write lists of your things and print them.");
-            Console.WriteLine("3: Check out version 2.0 of my calculator.");
-            Console.WriteLine();
-            Console.WriteLine("4: Close the application.");
+            applicationInitializer = serviceProvider.GetService<ApplicationInitializer>();
+            messages = serviceProvider.GetService<MainMenuMessages>();
+        }
+
+        public static void Show()
+        {
+            messages.WelcomeMessage();
             HandleUserInput();
         }
 
         private static void HandleUserInput()
         {
-            var option = int.Parse(Console.ReadLine());
-            applicationInitializer.Initialize(option);
+            try
+            {
+                applicationInitializer.GetApplication(int.Parse(Console.ReadLine())).StartApplication();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+            }
+            Show();
         }
     }
 }

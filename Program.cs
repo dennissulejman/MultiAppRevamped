@@ -2,9 +2,7 @@
 {
     internal class Program
     {
-        private static void Main(string[] args)
-        {
-            MainMenu.Display();
-        }
+        private static void Main() => 
+            MainMenu.Show();
     }
 }

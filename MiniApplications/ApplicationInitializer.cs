@@ -1,18 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MultiAppRevamped.MiniApplications
 {
     internal class ApplicationInitializer
     {
-        public IApplication Initialize(int option)
+        private readonly DieRollGame dieRollGame;
+        private readonly BookListCreator bookListCreator;
+        private readonly Calculator calculator;
+        private readonly IEnumerable<(int Option, IApplication Application)> applications;
+
+        public ApplicationInitializer(DieRollGame dieRollGame,
+                                      BookListCreator bookListCreator,
+                                      Calculator calculator)
         {
-            return option switch
-            {
-                1 => new DieRollGame(),
-                2 => new ListCreator(),
-                3 => new Calculator(),
-                _ => throw new InvalidOperationException("No such option available!")
-            };
+            this.dieRollGame = dieRollGame;
+            this.bookListCreator = bookListCreator;
+            this.calculator = calculator;
+            applications = SetApplications();
         }
+
+        private IEnumerable<(int, IApplication)> SetApplications()
+        {
+            yield return (1, dieRollGame);
+            yield return (2, bookListCreator);
+            yield return (3, calculator);
+        }
+
+        public IApplication GetApplication(int option) => 
+            applications.Where(application => 
+                application.Option.Equals(option))
+                    .FirstOrDefault().Application
+                        ?? throw new InvalidOperationException("Option not available! Try a different option");
     }
 }
