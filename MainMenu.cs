@@ -9,12 +9,12 @@ namespace MultiAppRevamped
     {
         private static readonly IServiceProvider serviceProvider =
             AppServiceProvider.GetServiceProvider();
-        private static readonly ApplicationInitializer applicationInitializer;
+        private static readonly ApplicationFactory applicationInitializer;
         private static readonly MainMenuMessages messages;
 
         static MainMenu()
         {
-            applicationInitializer = serviceProvider.GetService<ApplicationInitializer>();
+            applicationInitializer = serviceProvider.GetService<ApplicationFactory>();
             messages = serviceProvider.GetService<MainMenuMessages>();
         }
 
@@ -28,7 +28,8 @@ namespace MultiAppRevamped
         {
             try
             {
-                applicationInitializer.GetApplication(int.Parse(Console.ReadLine())).StartApplication();
+                int.TryParse(Console.ReadLine(), out int option);
+                applicationInitializer.GetApplication((ApplicationOptions)option).StartApplication();
             }
             catch (Exception ex)
             {

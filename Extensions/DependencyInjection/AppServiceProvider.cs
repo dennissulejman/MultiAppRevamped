@@ -11,7 +11,7 @@ namespace MultiAppRevamped.Extensions.DependencyInjection
         {
             return new ServiceCollection()
                 .AddSingleton<Program>()
-                .AddSingleton<ApplicationInitializer>()
+                .AddSingleton<ApplicationFactory>()
                 //.AddSingleton<MainMenu>()
                 .AddSingleton<MainMenuMessages>()
                 .AddTransient<DieRollGame>()
