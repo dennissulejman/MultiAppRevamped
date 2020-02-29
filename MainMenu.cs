@@ -2,6 +2,7 @@
 using MultiAppRevamped.Extensions.DependencyInjection;
 using MultiAppRevamped.MiniApplications;
 using System;
+using System.Collections.Generic;
 
 namespace MultiAppRevamped
 {
@@ -28,15 +29,29 @@ namespace MultiAppRevamped
         {
             try
             {
-                int.TryParse(Console.ReadLine(), out int option);
-                applicationInitializer.GetApplication((ApplicationOptions)option).StartApplication();
+                var option = (ApplicationOptions)int.Parse(Console.ReadLine());
+
+                if (option.Equals(ApplicationOptions.TerminateApplcation))
+                {
+                    Environment.Exit(0);
+                }
+
+                applicationInitializer.GetApplicationFromUserInput(option).StartApplication();
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("Option not available, try again!");
                 Console.ReadLine();
             }
-            Show();
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid input format. The format needs to be an integer number, try again!");
+                Console.ReadLine();
+            }
+            finally
+            {
+                Show();
+            }
         }
     }
 }

@@ -29,13 +29,7 @@ namespace MultiAppRevamped.MiniApplications
                 { ApplicationOptions.Calculator, calculator }
             };
 
-        public IApplication GetApplication(ApplicationOptions option)
-        {
-            if (option.Equals(ApplicationOptions.Terminate))
-            {
-                Environment.Exit(0);
-            }
-            return applications[option];
-        }
+        public IApplication GetApplicationFromUserInput(ApplicationOptions option) => 
+            applications[option];
     }
 }

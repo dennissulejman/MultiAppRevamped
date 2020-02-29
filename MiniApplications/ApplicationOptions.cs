@@ -5,6 +5,6 @@
         DieRollGame = 1,
         BookListCreator,
         Calculator,
-        Terminate
+        TerminateApplcation
     }
 }
