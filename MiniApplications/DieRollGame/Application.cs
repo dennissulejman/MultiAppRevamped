@@ -1,8 +1,6 @@
 ﻿using MultiAppRevamped.MiniApplications.Abstractions;
 using System;
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("MultiAppRevamped.Tests")]
 namespace MultiAppRevamped.MiniApplications.DieRollGame
 {
     internal class Application : IMiniApplication
