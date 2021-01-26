@@ -1,25 +1,33 @@
 ﻿using System;
 
-namespace MultiAppRevamped.MiniApplications.Messages
+namespace MultiAppRevamped.MiniApplications.Calculator
 {
-    internal class CalculatorMessages
+    internal static class Messenger
     {
-        public void WelcomeMessage()
+        public static void WelcomeMessage()
         {
             Console.Clear();
             Console.WriteLine("Write a mathematical formula that you would like to calculate ");
         }
 
-        public void Calculating() => 
+        public static void Calculating()
+        {
             Console.WriteLine("Calculating...");
+        }
 
-        public void CouldNotCalculateExpression() => 
+        public static void CouldNotCalculateExpression()
+        {
             Console.WriteLine("Could not calculate the given expression, try again!");
+        }
 
-        public void CalculationResult(decimal result) => 
+        public static void CalculationResult(decimal result)
+        {
             Console.WriteLine($"The result of the calculation is {result}");
+        }
 
-        internal void CalculationFinishedPromptMessage() =>
+        public static void CalculationFinishedPromptMessage()
+        {
             Console.WriteLine("Would you like to calculate a new problem? (y/n)");
+        }
     }
 }

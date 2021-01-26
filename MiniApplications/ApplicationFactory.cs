@@ -1,35 +1,34 @@
-﻿using System;
+﻿using MultiAppRevamped.Abstractions;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MultiAppRevamped.MiniApplications
 {
     internal class ApplicationFactory
     {
-        private readonly DieRollGame dieRollGame;
-        private readonly BookListCreator bookListCreator;
-        private readonly Calculator calculator;
-        private readonly Dictionary<ApplicationOptions, IApplication> applications;
+        private readonly DieRollGame.Application dieRollGame;
+        private readonly BookListCreator.Application bookListCreator;
+        private readonly Calculator.Application calculator;
 
-        public ApplicationFactory(DieRollGame dieRollGame,
-                                      BookListCreator bookListCreator,
-                                      Calculator calculator)
+        public ApplicationFactory(DieRollGame.Application dieRollGame,
+                                      BookListCreator.Application bookListCreator,
+                                      Calculator.Application calculator)
         {
             this.dieRollGame = dieRollGame;
             this.bookListCreator = bookListCreator;
             this.calculator = calculator;
-            applications = SetApplications();
         }
 
-        private Dictionary<ApplicationOptions, IApplication> SetApplications() => 
-            new Dictionary<ApplicationOptions, IApplication>
+        private Dictionary<ApplicationOption, IApplication> Applications =>
+            new Dictionary<ApplicationOption, IApplication>
             {
-                { ApplicationOptions.DieRollGame, dieRollGame },
-                { ApplicationOptions.BookListCreator, bookListCreator },
-                { ApplicationOptions.Calculator, calculator }
+                { ApplicationOption.DieRollGame, dieRollGame },
+                { ApplicationOption.BookListCreator, bookListCreator },
+                { ApplicationOption.Calculator, calculator }
             };
 
-        public IApplication GetApplicationFromUserInput(ApplicationOptions option) => 
-            applications[option];
+        public IApplication CreateApplication(ApplicationOption option)
+        {
+            return Applications[option];
+        }
     }
 }

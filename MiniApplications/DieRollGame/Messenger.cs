@@ -1,23 +1,29 @@
 ﻿using System;
 
-namespace MultiAppRevamped.MiniApplications.Messages
+namespace MultiAppRevamped.MiniApplications.DieRollGame
 {
-    internal class DieRollGameMessages
+    internal static class Messenger
     {
-        public void WelcomeMessage()
+        public static void WelcomeMessage()
         {
             Console.Clear();
             Console.WriteLine("To win, you will need either 5 or 6.");
             Console.WriteLine("Press enter to roll the die!");
         }
 
-        public void GameWonMessage(int dieRoll, int numberOfTries) =>
+        public static void GameWonMessage(int dieRoll, int numberOfTries)
+        {
             Console.WriteLine($"{dieRoll}! You won after {numberOfTries} die rolls.");
+        }
 
-        public void GameLostMessage(int dieRoll) =>
+        public static void GameLostMessage(int dieRoll)
+        {
             Console.WriteLine($"You rolled {dieRoll}, try again!");
+        }
 
-        public void PlayAgainPromptMessage() =>
+        public static void PlayAgainPromptMessage()
+        {
             Console.WriteLine("Would you like to play again? (y/n)");
+        }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace MultiAppRevamped
+namespace MultiAppRevamped.Main
 {
-    internal class MainMenuMessages
+    internal static class Messages
     {
-        public void WelcomeMessage()
+        public static void WelcomeMessage()
         {
             Console.Clear();
             Console.WriteLine("Welcome! Type one of the options then press enter to open their corresponding mini-application:");

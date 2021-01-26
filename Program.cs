@@ -1,8 +1,3 @@
-﻿namespace MultiAppRevamped
-{
-    internal class Program
-    {
-        private static void Main() => 
-            MainMenu.Show();
-    }
-}
+﻿using MultiAppRevamped.Startup;
+
+Services.Get<MultiAppRevamped.Main.Menu>().Display();

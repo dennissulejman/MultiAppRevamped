@@ -1,10 +1,10 @@
 ﻿namespace MultiAppRevamped.MiniApplications
 {
-    internal enum ApplicationOptions
+    internal enum ApplicationOption
     {
         DieRollGame = 1,
         BookListCreator,
         Calculator,
-        TerminateApplcation
+        TerminateApplication
     }
 }
